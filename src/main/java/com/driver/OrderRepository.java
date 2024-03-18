@@ -51,6 +51,7 @@ public class OrderRepository {
 
     public Order findOrderById(String orderId){
         // your code here
+
         return orderMap.get(orderId);
     }
 
@@ -62,7 +63,11 @@ public class OrderRepository {
     public Integer findOrderCountByPartnerId(String partnerId){
         // your code here
         DeliveryPartner partner=findPartnerById(partnerId);
-        return partner.getNumberOfOrders();
+        if(partner!=null){
+            return partner.getNumberOfOrders();
+        }
+        return 0;
+
     }
 
     public List<String> findOrdersByPartnerId(String partnerId){
