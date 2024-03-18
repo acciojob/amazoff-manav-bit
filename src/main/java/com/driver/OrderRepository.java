@@ -166,20 +166,24 @@ return null;
         int time=0;
         String LastDeliverytime="";
 //        LocalDateTime currentDateTime=LocalDateTime.now();
-        HashSet<String> orderlist=partnerToOrderMap.get(partnerId);
-        for(String str:orderlist){
-            Order order=orderMap.get(str);
-            time=Math.max(time,order.getDeliveryTime());
+        if(partnerToOrderMap.containsKey(partnerId)){
+            HashSet<String> orderlist=partnerToOrderMap.get(partnerId);
+            for(String str:orderlist){
+                Order order=orderMap.get(str);
+                time=Math.max(time,order.getDeliveryTime());
 
 //            int currentime=currentDateTime.getHour()*60+currentDateTime.getMinute();
 //            if(time>currentime)//delivered
 //LastDeliverytime=String.valueOf(time);
 
+            }
+            LastDeliverytime=String.valueOf(time/60)+":"+String.valueOf(time%60);
         }
 
 
 
-        LastDeliverytime=String.valueOf(time/60)+":"+String.valueOf(time%60);
+
+
 
 return LastDeliverytime;
     }
