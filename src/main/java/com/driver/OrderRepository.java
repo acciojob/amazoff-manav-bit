@@ -70,9 +70,13 @@ return null;
     public Integer findOrderCountByPartnerId(String partnerId){
         // your code here
 
-        DeliveryPartner partner=findPartnerById(partnerId);
-        if(partner!=null){
-            return partner.getNumberOfOrders();
+
+        if(partnerMap.containsKey(partnerId)){
+            if(partnerToOrderMap.containsKey(partnerId)){
+                HashSet<String>orderlist=partnerToOrderMap.get(partnerId);
+                return orderlist.size();
+            }
+
         }
         return 0;
 
@@ -107,12 +111,12 @@ return null;
         // your code here
         // delete partner by ID
         if(partnerMap.containsKey(partnerId)){
-            DeliveryPartner partner=partnerMap.get(partnerId);
-            partnerMap.remove(partnerId);// partner removed
+            DeliveryPartner partner=partnerMap.remove(partnerId);
+
             if(partnerToOrderMap.containsKey(partnerId)){
                 HashSet<String> orderlist=partnerToOrderMap.remove(partnerId);
                 for(String str:orderlist){
-                    orderToPartnerMap.remove(str);// unpairing all orders with this delivery partner
+                    orderToPartnerMap.remove(str);// unpairing all orders with this delivery partner(unassigning order)
                 }
 
             }
