@@ -129,15 +129,19 @@ public class OrderRepository {
 
     public Integer findOrdersLeftAfterGivenTimeByPartnerId(String timeString, String partnerId){
         // your code here
-        int time=Integer.parseInt(timeString);
+        String []parts=timeString.split(":");
+        int time=Integer.parseInt(parts[0])*60+Integer.parseInt(parts[1]);
         int count=0;
-        HashSet<String> orderlist=partnerToOrderMap.get(partnerId);
-        for(String str:orderlist){
-            Order order=orderMap.get(str);
-            if(order.getDeliveryTime()>time){
-                count++;
+        if(partnerToOrderMap.containsKey(partnerId)){
+            HashSet<String> orderlist=partnerToOrderMap.get(partnerId);
+            for(String str:orderlist){
+                Order order=orderMap.get(str);
+                if(order.getDeliveryTime()>time){
+                    count++;
+                }
             }
         }
+
         return count;
     }
 
