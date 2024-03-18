@@ -51,17 +51,25 @@ public class OrderRepository {
 
     public Order findOrderById(String orderId){
         // your code here
+if(orderMap.containsKey(orderId)){
+    return orderMap.get(orderId);
+}
+return null;
 
-        return orderMap.get(orderId);
     }
 
     public DeliveryPartner findPartnerById(String partnerId){
         // your code here
-        return partnerMap.get(partnerId);
+        if(partnerMap.containsKey(partnerId)){
+            return partnerMap.get(partnerId);
+        }
+        return null;
+
     }
 
     public Integer findOrderCountByPartnerId(String partnerId){
         // your code here
+
         DeliveryPartner partner=findPartnerById(partnerId);
         if(partner!=null){
             return partner.getNumberOfOrders();
@@ -72,12 +80,16 @@ public class OrderRepository {
 
     public List<String> findOrdersByPartnerId(String partnerId){
         // your code here
-        HashSet<String>orderlist=partnerToOrderMap.get(partnerId);
-        List<String> orders=new ArrayList<>();
-        for(String str:orderlist){
-            orders.add(str);
+        if(partnerToOrderMap.containsKey(partnerId)){
+            HashSet<String>orderlist=partnerToOrderMap.get(partnerId);
+            List<String> orders=new ArrayList<>();
+            for(String str:orderlist){
+                orders.add(str);
+            }
+            return orders;
         }
-        return orders;
+        return new ArrayList<>();
+
     }
 
     public List<String> findAllOrders(){
@@ -94,15 +106,18 @@ public class OrderRepository {
     public void deletePartner(String partnerId){
         // your code here
         // delete partner by ID
-        DeliveryPartner partner=partnerMap.get(partnerId);
-        partnerMap.remove(partnerId);// partner removed
-        if(partnerToOrderMap.containsKey(partnerId)){
-            HashSet<String> orderlist=partnerToOrderMap.remove(partnerId);
-            for(String str:orderlist){
-                orderToPartnerMap.remove(str);// unpairing all orders with this delivery partner
-            }
+        if(partnerMap.containsKey(partnerId)){
+            DeliveryPartner partner=partnerMap.get(partnerId);
+            partnerMap.remove(partnerId);// partner removed
+            if(partnerToOrderMap.containsKey(partnerId)){
+                HashSet<String> orderlist=partnerToOrderMap.remove(partnerId);
+                for(String str:orderlist){
+                    orderToPartnerMap.remove(str);// unpairing all orders with this delivery partner
+                }
 
+            }
         }
+
 
     }
 
